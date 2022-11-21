@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compstible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>扫雷？？？</title>
+  <style>
+body{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 125%;
+    background-color: aliceblue;
+    color: gray;
+    width: 100%;
+    height: 100%;
+    font-weight: bolder;
+}
+table, td, th{
+    border: 3px solid #666;
+    border-collapse: collapse;
+    text-align: center;
+}
+table{
+    width: 100%;
+    height: 100%;
+}
+th a{
+    padding: 0% 1em;
+    font-size: larger;
+    font-weight: bolder;
+    color: aqua;
+}
+a#time{
+    color: #FF000f;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1em;
+}
+a#manue3.bjd{
+    text-decoration: underline dotted #FF000f 2px;
+    color: #f35757;
+}
+a#manue3{
+    color: blue;
+    font-size: 100%;
+    text-decoration: dotted line-through black 3px;
+}
+a#manue3:hover{
+    text-decoration: underline;
+    display: inline-block;
+    animation: box 1s infinite ease;
+}
+a#manue3:active{
+    color: red;
+    font-size: 100%;
+    text-decoration: none;
+}
+a#num{
+    color: #FF000f;
+    text-shadow: 
+        1px 1px 1px silver,
+        2px 2px 1px silver,
+        3px 3px 1px silver;
+    border: 0.1em;
+    background-color: aquamarine;
+}
+@keyframes box{
+    0%{
+        transform: rotate(0deg);
+        color: #666;
+    }33%{
+        transform: rotate(10deg);
+        color: #3aff3a;
+    }66%{
+        transform: rotate(-10deg);
+        color: #4e4eff;
+    }100%{
+        transform: rotate(0deg);
+        color: #666;
+    }
+}
+td.cpk{
+    color: #FF000f;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    background-color: grey;
+    text-decoration: none;
+    box-shadow: -4px -4px 4px black;
+    transition: .2s;
+}
+td.cpk:hover{
+    background-color: rgba(136, 236, 253, 0.61);
+}
+td.cpk:active{
+    background-color: darkblue;
+}
+td.pk{
+    background-color: aliceblue;
+}td.pk.p1{
+    color: yellow;
+}td.pk.p2{
+    color: #3aff3a;
+}td.pk.p3{
+    color: #4e4eff;
+}td.pk.p4{
+    color: indigo;
+}td.pk.p5{
+    color: purple;
+}td.pk.p6{
+    color: red;
+}td.pk.p7{
+    color: orange;
+}td.pk.p8{
+    color: tomato;
+}
+td.bjl{
+  background-color: rgb(60, 253, 86);
+  text-decoration: line-through 3px;
+}
+.wining{}
+.bend{content: url(images/bend.gif);}
+#falling {
+    height: 1em;
+    font-size: 800%;
+    text-align: center;
+    width: 60%;
+    left: 20%;
+    position: relative;
+    display: block;
+    border-radius: 1em;
+    text-shadow: 9px -9px 9px #666c;
+}
+#falling.fall{
+    background-image: linear-gradient(to left, #fff, #dff);
+    box-shadow: 9px 9px 9px;
+}
+#falling.win{
+    background-image: linear-gradient(to left, #ff9879, #87a8a8);
+    background:1em linear-gradient(to left, #ff1a1a, #ffa80a, #ffff1b, #3aff3a, #4e4eff, indigo, #e122e1);
+    animation: fin 1.5s infinite ease-in-out;
+    box-shadow: 9px 9px 9px;
+}
+@keyframes fin{
+    0%{
+        background:1em linear-gradient(to left, #ffa80a, #ffff1b, #3aff3a, #4e4eff, indigo, #e122e1, #ff1a1a);
+        transform: rotateX(0deg);
+        color: #666;
+    }13%{
+        background:1em linear-gradient(to left, #ffff1b, #3aff3a, #4e4eff, indigo, #e122e1, #ff1a1a, #ffa80a);
+        transform: rotateX(10deg);
+        color: rgb(196, 58, 58);
+    }26%{
+        background:1em linear-gradient(to left, #3aff3a, #4e4eff, indigo, #e122e1, #ff1a1a, #ffa80a, #ffff1b);
+        transform: rotateX(16deg);
+        color: rgb(216, 180, 60);
+    }39%{
+        background:1em linear-gradient(to left, #4e4eff, indigo, #e122e1, #ff1a1a, #ffa80a, #ffff1b, #3aff3a);
+        transform: rotateX(10deg);
+        color: rgb(96, 216, 60);
+    }52%{
+        background:1em linear-gradient(to left, #4e4eff, indigo, #e122e1, #ff1a1a, #ffa80a, #ffff1b, #3aff3a);
+        transform: rotateY(0deg);
+        color: rgb(43, 193, 219);
+    }66%{
+        background:1em linear-gradient(to left, indigo, #e122e1, #ff1a1a, #ffa80a, #ffff1b, #3aff3a, #4e4eff);
+        transform: rotateY(-10deg);
+        color: rgb(43, 84, 219);
+    }77%{
+        background:1em linear-gradient(to left, indigo, #e122e1, #ff1a1a, #ffa80a, #ffff1b, #3aff3a, #4e4eff);
+        transform: rotateY(-16deg);
+        color: rgb(41, 10, 155);
+    }88%{
+        background:1em linear-gradient(to left, indigo, #e122e1, #ff1a1a, #ffa80a, #ffff1b, #3aff3a, #4e4eff);
+        transform: rotateY(-10deg);
+        color: rgb(124, 13, 134);
+    }100%{
+        background:1em linear-gradient(to left, #ffa80a, #ffff1b, #3aff3a, #4e4eff, indigo, #e122e1, #ff1a1a);
+        transform: rotateX(0deg);
+        color: #666;
+    }
+}
+
+div{
+    border: #666 double 5px;
+    text-align: center;
+    padding: 0 10%;
+    width: 70%;
+    background: fixed linear-gradient(90deg,rgb(134, 255, 134), aqua 30%,
+         rgb(134, 255, 134) 50%, aqua);
+    height: 10%;
+}
+</style>
+  <script>
+window.onload=initAll
+let ht=20
+let wt=20
+let sz=ht*wt
+let dl=0.1
+let npk=0
+let bj=false
+let stop=false
+const dlz=new Array()
+const dlzw=[]
+var tishi=["Change the mine's Number.",
+       "Change the table's size.",
+       'Reload in the case of saving your change.',
+       'To mark the block',
+       'check'
+    ]
+function initAll() {
+    if (document.getElementById&&tishi.indexOf('check')==4) {
+        main()
+    }else{
+        alert("Sorry, your browser doesn't support this script.")
+    }
+}
+function main() {
+    let dln=mdl()
+    for(let i=0,u;i<ht;i++){
+        for(u=0;u<wt;u++){
+            dlzw[i+'-'+u]=Object.values({
+                0:dlz[i+'-'+(u-1)],
+                1:dlz[i+'-'+(u+1)],
+                2:dlz[(i+1)+'-'+u],
+                3:dlz[(i-1)+'-'+u],
+                4:dlz[(i+1)+'-'+(u+1)],
+                5:dlz[(i-1)+'-'+(u-1)],
+                6:dlz[(i+1)+'-'+(u-1)],
+                7:dlz[(i-1)+'-'+(u+1)]
+            }).filter(v=>v).length
+            document.getElementById(i+'-'+u).onmousedown=pk
+        }
+    }
+    TIME(0)
+    manue();
+}
+function pk(evt) {
+    if (evt) {
+        var pkid=evt.target;
+        var bt=evt.button;
+    }
+    else {
+        var pkid=window.EventTarget;
+        var bt=window.Event;                    
+    }
+    if(!npk){return}
+    var cn=pkid.className;
+    var i=this.id;
+    if (bj) {bt=1}
+    switch (bt) {
+        case 0:
+            break;
+        case 2:case 1:
+            var a=bij(cn);
+            if(a[0]){
+                fullname(i, a[0])
+                fullnum(i, a[1])
+            }
+            return;
+        default:
+            return;
+    }
+    if (dlz[i] && cn!='bjl') {
+        fullname('TABLE','bend')
+        fullnum('falling', '失败')
+        fullname('falling', 'fall')
+        stop=true
+    }else if(cn=='cpk'){
+        pkid.className='pk'
+        from(i)
+    }
+}
+function TIME(v,timehandle=document.getElementById('time')){
+    if(!stop){
+        let m=String(Math.floor(v/60)),s=String(v%60)
+        timehandle.innerHTML=(m.length==1?'0'+m:m)+':'+(s.length==1?'0'+s:s)
+        setTimeout(()=>TIME(v+1, timehandle), 996)
+    }
+}
+function from(i){
+    npk--
+    fullnum('num','剩余：'+npk)
+    var d=dlzw[i]
+    if (! npk) {
+        fullname('TABLE', 'wining')
+        fullnum('falling', '成功')
+        fullname('falling', 'win')
+        stop=true
+    }
+    if(d){
+        fullname(i, 'pk')
+        document.getElementById(i).classList.add('p'+d)
+        fullnum(i, d)
+    }
+    else{
+        var t=i.split('-').map(v => Number(v))
+        var loop = (y, x)=>{[
+            y+'-'+(x+1),
+            y+'-'+(x-1),
+            (y+1)+'-'+x,
+            (y-1)+'-'+x,
+            (y+1)+'-'+(x+1),
+            (y+1)+'-'+(x-1),
+            (y-1)+'-'+(x+1),
+            (y-1)+'-'+(x-1)
+        ].forEach(v => {
+            if(!(dlzw[v]===undefined)&&document.getElementById(v).getAttribute('class').indexOf('cpk')>=0){
+                fullname(v, 'pk')
+                setTimeout(()=>from(v), Math.floor(sz/10))
+            }
+        })
+        }
+        loop(t[0],t[1])
+    }
+}
+function bij(cn) {
+    switch(cn) {
+    case 'bjl':
+        return ['cpk', '']
+    case 'cpk':
+        return ['bjl', 'X']
+    default:
+        return [false]
+    }
+}
+function mdl() {
+    const swh=window.screen.availWidth
+    const sht=window.screen.availHeight
+    let size=5
+    while(size*(ht+1)<=sht&&size*wt<=swh){size++}
+    size--
+    let dln=0
+    const box=document.querySelector('#TABLE')
+    const result=[]
+    for (var i=0,u;i<ht;i++) {
+        result.push(`<tr>`)
+        for(u=0;u<wt;u++){
+            dlz[i+'-'+u]=Math.random()<dl
+            dln+=dlz[i+'-'+u]
+            result.push(`<td id="${i+'-'+u}" class="cpk" style="width:${size}px;height:${size}px"></td>`)
+        }
+        result.push(`</tr>`)
+    }
+    npk=(sz=ht*wt)-dln
+    result.unshift(`<th colspan="${wt}"><a id="time">00:00</a><a>扫雷？？</a><a id="manue3">标记</a>
+        <a>地雷：${dln}</a><a id="num">剩余：${npk}</a></th>`)
+    box.innerHTML=result.join('')
+    return dln
+}
+function fullnum(pos,w) {
+    document.getElementById(pos).innerHTML=w
+}
+function fullname(pos,v) {
+    document.getElementById(pos).className=v
+}
+function manue() {
+    for (var n=0;n<4;n++){
+        var name='manue'+n;
+        var bot=document.getElementById(name)
+        bot.onmousedown=function() {
+            var i=~~this.id[5]
+            if (confirm('Button '+(i+1)+' is for:\n'+tishi[i]+'\nAre you sure to chang?')) {
+                stop=true
+                setupmanue(i)
+                stop=false
+            }
+        }
+    }
+}
+function setupmanue (n) {
+    switch(n) {
+        case 0:
+            var i=prompt('地雷数量：#当前概率：'+(dl),'');
+            try {
+                if (!i||isNaN(i)||i>=1||i<=0) {throw new Error('NOT A VAILD NUMBER!')}
+                dl=Number(i)
+                break
+            }
+            catch(e) {
+                alert(e.message)
+                return
+            }
+        case 1:
+            var a=prompt('矩阵宽度：'+(wt)+' #当前宽度','')
+            var b=prompt('矩阵高度：'+(ht)+' #当前高度','')
+            try {
+                if (!a||!b||isNaN(a)||isNaN(b)||a<1||b<1) {throw new Error('NOT VAILD NUMBERS!')}
+                sz=(wt=Math.floor(a))*(ht=Math.floor(b))
+                break
+            }
+            catch(e) {
+                alert(e.message)
+                return
+            }
+        case 3:
+            bj=! bj
+            document.getElementById('manue3').classList.toggle('bjd')
+            return
+    }
+    fullname('TABLE', '')
+    fullname('falling', '')
+    fullnum('falling', '')
+    stop=false
+    fullnum('time', '00:00')
+    main()
+}
+    </script>
+</head>
+<body>
+<table id="TABLE">
+</table>
+<p id="falling"></p>
+<div>
+<h3>The manue is for change.</h3>
+<input type="button" id="manue0" value="mine's number">
+<input type="button" id="manue1" value="table's size">
+<input type="button" id="manue2" value="reload but save">
+<a href="V.html" id="reload">reload</a>
+</div>
+</body>
+</html>
