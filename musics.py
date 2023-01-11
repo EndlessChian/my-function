@@ -18,22 +18,15 @@ def down(url, name):
     respone = requests.get(url)
     assert respone.status_code != '200', 'status code is not 200'
     with open(name, 'wb') as f:
-        print('*', end='')
         for ck in respone.iter_content(102400):
             f.write(ck)
             f.flush()
-            print('-', end='')
-        print('|')
         #f.write(respone.content)
     print('{} down ok with in {:.0f}min {:.2f}s.'.format(name, *divmod(time() - o, 60)))
 
 def filt(name):
-    return name.replace('&nbsp;', ' ').replace('/', '_').replace('\\', '-').replace(':', '_')
-    #name = list(name.replace('&nbsp;', '-'))
-    #for i in range(len(name)):
-    #    if not name[i].isalnum():
-    #        name[i] = '_'
-    #return ''.join(name)
+    return name.replace('&nbsp;', ' ').replace('&apos;', "'")\
+        .translate(str.maketrans('<>"?:/\\|*', "[]'？：;_-^"))#\/:*?"<>|
 
 def main(mode='A'):
     key = input('SONGER:\t')
@@ -42,13 +35,13 @@ def main(mode='A'):
     resp = requests.get(url, headers=headers)
     assert resp.status_code != '200', 'code is not 200'
     for data in resp.json()['data']['list']:
-        print(f'''NAME={data['name'].replace('&nbsp;', ' ')} ARTIST={data['artist']} TIME={data['songTimeMinutes']}''')
+        print(f'''NAME={data['name'].replace('&nbsp;', ' ')} ARTIST={data['artist'].replace('&nbsp;', '&')} TIME={data['songTimeMinutes']}''')
         if mode.upper() == 'S':
             page = input('download???\t').lower()
             if page.startswith('n'): continue
             elif page.startswith('b'): break
         name = data['name'].split('-')[0]
-        key = os.path.join(file, data['artist'])
+        key = os.path.join(file, filtdir(data['artist'].replace('&nbsp;', '&')))
         if not os.path.exists(key): os.mkdir(key)
         filename = os.path.join(key, filt(name)) + '.mp3'
         if os.path.isfile(filename): continue
