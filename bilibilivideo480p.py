@@ -47,7 +47,7 @@ def GetBiliVideo(homeurl,num,file,session=requests.session()):
     # 获取每一集的名称
     try:
         print(listjson)
-        name=dirname + '_' + listjson['progress']['last_ep_index']#['videoData']['pages'][num]['part']
+        name=dirname + '_' + listjson['progress']['last_ep_index']
     except KeyError:
         #'/html/body/div[2]/div[2]/div[3]/div[2]/ul/li[8]/a/span'
         name = dirname + '_' + str(num + 1)#('not found listnum, please add one:\t')
@@ -58,7 +58,6 @@ def GetBiliVideo(homeurl,num,file,session=requests.session()):
     if flag==0:
         print('正在下载 "'+name+'" 的音频····')
         BiliBiliDownload(homeurl=homeurl,url=AudioURl, name=os.path.join(file, dirname, name) + '_Audio.mp3', session=session)
-        print('正在组合 "'+name+'" 的视频和音频····')
     print(' "'+name+'" 下载完成！')
 
 def BiliBiliDownload(homeurl,url, name, session=requests.session()):
@@ -88,7 +87,7 @@ def BiliBiliDownload(homeurl,url, name, session=requests.session()):
             break
 
 
-#https://www.bilibili.com/video/av306286164
+#av306286164
 if __name__ == '__main__':
     av = input('请输入视频号：')
     url='https://www.bilibili.com/video/'+av
