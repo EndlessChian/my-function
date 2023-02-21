@@ -1,10 +1,8 @@
 #!python3
 #encoding=gbk
-try:
-    from os import path
-    import turtle
-    from random import choice
-except ImportError as e:exit(e)
+from os import path
+import turtle
+from random import choice
 files = 'images'
 rpath = path.realpath('.') + '\\' + files
 boundary = turtle.Screen()
@@ -15,7 +13,7 @@ while ii < 5000:
     ii *= 2
     n = f'{rpath}\\{ii}.gif'
     boundary.register_shape(n) if path.exists(n) else exit(f"This program is need {n} .")
-del n, ii, files
+del n, ii, files, path
 boundary.setup(430, 630, 400, 50)
 boundary.bgcolor('gray')
 boundary.title('2048')
@@ -28,7 +26,7 @@ class Block(turtle.Turtle):
         self.shape(bg); self.stamp()
         self.grow()
     def grow(self):
-        global TIME, EXIT, pit
+        global TIME, pit
         bc_time.show_msg('time', TIME)
         bc_score.show_msg('score', score)
         bc_top_score.show_msg('top_score', top_score)
@@ -38,9 +36,7 @@ class Block(turtle.Turtle):
             return
         pit += 1
         bc_pit.show_msg('pit', pit)
-        if TIME == -1:
-            draw_time()
-            EXIT = True
+        if TIME == -1: draw_time()
         num = choice((2, 2, 2, 2, 4))
         self.shape(f'{rpath}\\{num}.gif')
         a = choice(allpos)
@@ -64,7 +60,7 @@ class Block(turtle.Turtle):
     def go_down(self):
         if fin:return
         for i in range(4):
-            while any(self.__judge(i, u, i, u + 1) for u in (2, 1, 0)):...
+            while any(self.__judge(i, u, i, u + 1) for u in (2, 1, 0)):pass
             #for o in range(3):
             #    if not True in [self.__judge(i, u, i, u + 1) for u in (2, 1, 0)]:break
         self.__go()
@@ -72,22 +68,21 @@ class Block(turtle.Turtle):
     def go_up(self):
         if fin:return
         for i in range(4):
-            while any(self.__judge(i, u, i, u - 1) for u in (1, 2, 3)):...
+            while any(self.__judge(i, u, i, u - 1) for u in (1, 2, 3)):pass
         self.__go()
 
     def go_left(self):
         if fin :return
         for u in range(4):
-            while any(self.__judge(i, u, i - 1, u) for i in (1, 2, 3)):...
+            while any(self.__judge(i, u, i - 1, u) for i in (1, 2, 3)):pass
         self.__go()
 
     def go_right(self):
         if fin:return
         for u in range(4):
-            while any(self.__judge(i, u, i + 1, u) for i in (2, 1, 0)):...
+            while any(self.__judge(i, u, i + 1, u) for i in (2, 1, 0)):pass
         self.__go()
-    @staticmethod
-    def __judge(i,u,y,x):
+    def __judge(self,i,u,y,x):
         global block2, score, top_score
         a, b = block2[i][u], block2[y][x]
         if a == 0:return False
@@ -95,35 +90,29 @@ class Block(turtle.Turtle):
         elif b == a:
             score += a
             if score > top_score: top_score = score
-            if a == 1024: win_lose.show_text("达成2048，继续请按回车键")
+            if a == 1024: win_lose.show_text("杈炬垚2048锛岀户缁鎸夊洖杞﹂敭")
         else:return False
         block2[y][x] += a
         block2[i][u] = 0
         allpos.append((i, u))
         return True
-    @staticmethod
-    def __check():
+    def __check(self):
         for i in range(4):
             for u in range(4):
                 b = block2[i][u]
                 if b == 0 or u < 3 and (b == block2[i][u+1] or block2[u][i] == block2[u+1][i]):return
         global fin;fin = True
-        win_lose.show_text('游戏结束，重新开始请按空格键')
+        win_lose.show_text('娓告垙缁撴潫锛岄噸鏂板紑濮嬭鎸夌┖鏍奸敭')
 
 class Background(turtle.Turtle):
-    __position = {
-        'pit': (-115, 210),
-        'time': (-115, 135),
-        'score': (125, 210),
-        'top_score': (125, 135)
-    }
-    def __init__(self):
+    def __init__(self, pos):
         super(Background, self).__init__()
         self.pu();self.ht()
+        self.color('white')
+        self.goto(pos)
 
     def show_msg(self, pos, msg):
-        self.color('white'); self.clear()
-        self.goto(self.__position[pos])
+        self.clear()
         self.write(f'{msg}', align='center', font=("Arial", 20, "bold"))
 
 class WinLose(turtle.Turtle):
@@ -131,7 +120,7 @@ class WinLose(turtle.Turtle):
         super().__init__()
         self.pu();self.ht(); self.color('red')
     def show_text(self, text):
-        self.write(text, align='center', font=("黑体", 20, "bold"))
+        self.write(text, align='center', font=("榛戜綋", 20, "bold"))
         block.grow()
 
 def init():
@@ -152,16 +141,15 @@ def draw_time():
     bc_time.show_msg('time', TIME)
     boundary.ontimer(draw_time, 996)
 
-fin, EXIT = False, False
+fin = False
 pit, TIME, score, top_score = -1, -1, 0, 0
 allpos = [(i, u) for i in range(4) for u in range(4)]
 block2 = [[0]*4 for i in range(4)]
-bc_pit = Background()
-bc_time = Background()
-bc_score = Background()
-bc_top_score = Background()
+bc_pit = Background((-115, 210))
+bc_time = Background((-115, 135))
+bc_score = Background((125, 210))
+bc_top_score = Background((125, 135))
 block = Block()
-move_time = 0.1
 win_lose = WinLose()
 boundary.listen()
 boundary.onkey(block.go_right, 'Right')
@@ -170,7 +158,7 @@ boundary.onkey(block.go_up, 'Up')
 boundary.onkey(block.go_down, 'Down')
 boundary.onkey(win_lose.clear, 'Return')
 boundary.onkey(init, 'space')
-boundary.onkey(lambda : boundary.bye(), 'Escape')
+boundary.onkey(boundary.bye, 'Escape')
 if __name__ == '__main__':
-    while not EXIT:boundary.update()
+    boundary.update()
     boundary.mainloop()
