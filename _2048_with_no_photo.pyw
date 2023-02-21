@@ -61,13 +61,11 @@ class Block(turtle.Turtle):
         self.hideturtle()
 
     def grow(self):
-        global block2, pit,EXIT
+        global block2, pit
         if not empty:
             if fin is False: self.check()
             return
-        if TIME == -1:
-            EXIT = True
-            draw_time()
+        if TIME == -1: draw_time()
         pit += 1
         bc_pit.show_block(pit, 'pit')
         num = choice((2, 2, 2, 2, 4))
@@ -106,8 +104,8 @@ class Block(turtle.Turtle):
             for y in range(4):
                 draw.draw_cube(x, y, block2[x][y])
         self.grow()
-    @staticmethod
-    def judge(i,u,y,x):
+
+    def judge(self, i,u,y,x):
         global block2, score, top_score
         a, b = block2[i][u], block2[y][x]
         if a == 0:return False
@@ -123,8 +121,8 @@ class Block(turtle.Turtle):
         block2[y][x] += a; block2[i][u] = 0
         empty.append((i, u))
         return True
-    @staticmethod
-    def check():
+    
+    def check(self):
         for i in range(4):
             for u in range(4):
                 b = block2[i][u]
@@ -182,7 +180,7 @@ def draw_time():
     bc_time.show_block(TIME, 'time')
     dary.ontimer(draw_time, 995)
 
-fin, EXIT = False, False
+fin = False
 score, top_score, pit, TIME = 0, 0, -1, -1
 empty = [(i, u) for i in range(4) for u in range(4)]
 block2 = [[0]*4 for i in range(4)]
@@ -196,7 +194,6 @@ bc_score.show_block(0, 'score')
 bc_top_score.show_block(0, 'top_score')
 block = Block()
 block.grow()
-move_time = 0.1
 win_lose = WinLose()
 dary.listen()
 dary.onkey(block.go_right, 'Right')
@@ -207,5 +204,5 @@ dary.onkey(win_lose.clear, 'Return')
 dary.onkey(init, 'space')
 dary.onkey(lambda : dary.bye(), 'Escape')
 if __name__ == '__main__':
-    while not EXIT:  dary.update()
+    dary.update()
     dary.mainloop()
