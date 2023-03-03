@@ -3,8 +3,7 @@
 from os import path
 import turtle
 from random import choice
-files = 'images'
-rpath = path.realpath('.') + '\\' + files
+rpath = r'./images'
 boundary = turtle.Screen()
 bg = f'{rpath}\\bg.gif'
 boundary.register_shape(bg) if path.exists(bg) else exit(f"This program is need {bg} .")
@@ -13,7 +12,7 @@ while ii < 5000:
     ii *= 2
     n = f'{rpath}\\{ii}.gif'
     boundary.register_shape(n) if path.exists(n) else exit(f"This program is need {n} .")
-del n, ii, files, path
+del n, ii, path
 boundary.setup(430, 630, 400, 50)
 boundary.bgcolor('gray')
 boundary.title('2048')
